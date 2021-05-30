@@ -5,8 +5,7 @@
 import random
 import time
 
-# Brute force method: calculate every element of the corresponding array
-# manually.
+# Brute force method: calculate every element of the corresponding array manually.
 def brute(a):
     soln = []
     for x in range(len(a)):
@@ -16,8 +15,7 @@ def brute(a):
                 soln[x] *= arr[y]
     return soln
 
-# Speed up the process by reducing repeat operations. Steps are explained with
-# the example array: [1,3,5,2,4]. The solution is [120,40,24,60,30].
+# Sped up the process but I made this way too complicated.
 def clever(a):
     soln = []
     for x in range(len(a)):
@@ -58,26 +56,27 @@ def clever(a):
     # We've reduced operations from O(n^2) to ~O(2n).
     return soln
 
+# I made the clever() function way more complicated than it needed to be.
+# Just multiply every element together and then the solution for each spot
+# is that divided by the number in the array at the same location.
+# So for [1, 2, 3, 4, 5], 5*4*3*2*1=120
+# so the solution is [120/1, 120/2, 120/3, 120/4, 120/5]
+def simple(a):
+    num = 1
+    for x in a:
+        num *= x
+    soln = []
+    for x in a:
+        soln.append(int(num/x))
+    return soln
+
 if __name__ == '__main__':
     n = int(input('Enter number of items: '))
 
     arr = []
     for x in range(n):
-        arr.append(random.randint(0,50))
+        arr.append(random.randint(1,50))
 
-    p1 = time.time_ns()
-    sc = clever(arr)
-    p2 = time.time_ns()
-    print('Clever solved in {} s'.format((p2-p1)/10**9))
-
-    p1 = time.time_ns()
-    sb = brute(arr)
-    p2 = time.time_ns()
-    print('Brute solved in {} s'.format((p2-p1)/10**9))
-
-    for x in range(len(sb)):
-        if sb[x] != sc[x]:
-            print('Error: solutions do not match')
-            exit()
-
-    print('Checked: solutions match')
+    print(simple(arr))
+    print(clever(arr))
+    print(brute(arr))
